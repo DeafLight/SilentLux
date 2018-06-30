@@ -1,3 +1,7 @@
-.vs
+# user files
+.vs/
+*.csproj.user
+
+# output directories
 [Bb]in/
 [Oo]bj/
