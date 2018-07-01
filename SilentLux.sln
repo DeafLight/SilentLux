@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilentLux.Web", "SilentLux.Web\SilentLux.Web.csproj", "{ADD8C2BB-C761-4B82-8716-770B7BF35C7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SilentLux.WebApi", "SilentLux.WebApi\SilentLux.WebApi.csproj", "{5B1665C3-41B3-4B32-B75E-7CCE155417A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ADD8C2BB-C761-4B82-8716-770B7BF35C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ADD8C2BB-C761-4B82-8716-770B7BF35C7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ADD8C2BB-C761-4B82-8716-770B7BF35C7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ADD8C2BB-C761-4B82-8716-770B7BF35C7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B1665C3-41B3-4B32-B75E-7CCE155417A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B1665C3-41B3-4B32-B75E-7CCE155417A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B1665C3-41B3-4B32-B75E-7CCE155417A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B1665C3-41B3-4B32-B75E-7CCE155417A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
