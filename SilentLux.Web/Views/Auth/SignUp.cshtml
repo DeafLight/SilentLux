@@ -1,0 +1,17 @@
+﻿@model SilentLux.Web.Models.SignUpModel
+
+@if (!ViewContext.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="form-validation"></div>
+}
+
+<form class="form-signin" asp-action="SignUp">
+    <h2>Please register</h2>
+    <label class="sr-only">Username</label>
+    <input type="text" class="form-control" placeholder="Username" asp-for="Username" />
+    <label class="sr-only">Password</label>
+    <input type="password" class="form-control" placeholder="Password" asp-for="Password" />
+    <label class="sr-only">Repeat password</label>
+    <input type="password" class="form-control" placeholder="Repeat password" asp-for="RepeatPassword" />
+    <button class="btn btn-lg btn-block btn-primary" type="submit">Register</button>
+</form>

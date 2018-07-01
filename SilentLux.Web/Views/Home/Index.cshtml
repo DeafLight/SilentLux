@@ -1,0 +1,28 @@
+﻿
+<div class="jumbotron">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h1>Hello @User.Identity.Name!</h1>
+    }
+    else
+    {
+        <h1>Hello World!</h1>
+    }
+    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p>
+            <a class="btn btn-lg btn-success" asp-controller="Auth" asp-action="SignUp">Sign up</a>
+        </p>
+    }
+</div>
+<div class="row marketing">
+    <div class="col-lg-6">
+        <h4>Subheading</h4>
+        <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+    </div>
+    <div class="col-lg-6">
+        <h4>Subheading</h4>
+        <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+    </div>
+</div>

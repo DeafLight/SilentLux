@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Demo</title>
+    <link href="~/styles/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/styles/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li role="presentation"><a href="/userinformation">User Information</a></li>
+                        <li role="presentation" class="active">
+                            <form method="post" asp-controller="Auth" asp-action="SignOut">
+                                <button type="submit" class="btn btn-primary">Sign Out</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li role="presentation" class="active"><a asp-controller="Auth" asp-action="SignIn">Sign In</a></li>
+                    }
+                </ul>
+            </nav>
+            <h3 class="text-muted">Demo</h3>
+        </div>
+        @RenderBody()
+        <footer class="footer"></footer>
+    </div>
+</body>
+</html>

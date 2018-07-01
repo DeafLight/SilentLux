@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SilentLux.Model\SilentLux.Model.csproj" />
+    <ProjectReference Include="..\SilentLux.Services.Interfaces\SilentLux.Services.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
