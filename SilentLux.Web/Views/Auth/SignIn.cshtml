@@ -4,5 +4,7 @@
 
 @foreach (var provider in await schemeProvider.GetRequestHandlerSchemesAsync())
 {
-    <a class="btn btn-primary login-button" asp-action="SignIn" asp-route-provider="@provider.Name">@provider.DisplayName</a>
+    <a class="btn btn-primary login-button" asp-action="SignIn"
+       asp-route-provider="@provider.Name"
+       asp-route-returnUrl="@Context.Request.Query["returnUrl"]">@provider.DisplayName</a>
 }

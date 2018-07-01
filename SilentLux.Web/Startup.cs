@@ -33,6 +33,10 @@ namespace Pluralsight.AspNetCore.Auth.Web
                     options.AppId = "200069633984414";
                     options.AppSecret = "33d4cba728e720b6afbb6f2751e6be9d";
                 })
+                .AddTwitter(options=> {
+                    options.ConsumerKey = "XcNWcFHyAKFxsiAoEqmaajHsH";
+                    options.ConsumerSecret = "xaxT01KbHZsiqsqloY3kFxv8EfCZ1M9YnKNPFz7QSif08VGVJg";
+                })
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/auth/signin";

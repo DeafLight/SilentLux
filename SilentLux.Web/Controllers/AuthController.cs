@@ -34,9 +34,9 @@ namespace SilentLux.Web.Controllers
         }
 
         [Route("signin/{provider}")]
-        public IActionResult SignIn(string provider)
+        public IActionResult SignIn(string provider, string returnUrl = null)
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
+            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl ?? "/" }, provider);
         }
 
         [Route("signin")]
