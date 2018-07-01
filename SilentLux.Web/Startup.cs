@@ -28,6 +28,11 @@ namespace Pluralsight.AspNetCore.Auth.Web
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "200069633984414";
+                    options.AppSecret = "33d4cba728e720b6afbb6f2751e6be9d";
+                })
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/auth/signin";

@@ -1,15 +1,8 @@
-﻿@model SilentLux.Web.Models.SignInModel
+﻿@inject Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider schemeProvider
 
-@if (!ViewContext.ModelState.IsValid)
+<a class="btn btn-primary login-button" asp-action="SignInLocal">Local</a>
+
+@foreach (var provider in await schemeProvider.GetRequestHandlerSchemesAsync())
 {
-    <div asp-validation-summary="All" class="form-validation"></div>
+    <a class="btn btn-primary login-button" asp-action="SignIn" asp-route-provider="@provider.Name">@provider.DisplayName</a>
 }
-
-<form class="form-signin" asp-action="SignIn" asp-route-returnUrl="@Context.Request.Query["returnUrl"]">
-    <h2>Please sign in</h2>
-    <label class="sr-only">Username</label>
-    <input type="text" class="form-control" placeholder="Username" asp-for="Username" />
-    <label class="sr-only">Password</label>
-    <input type="text" class="form-control" placeholder="Password" asp-for="Password" />
-    <button class="btn btn-lg btn-primary btn-block">Sign in</button>
-</form>

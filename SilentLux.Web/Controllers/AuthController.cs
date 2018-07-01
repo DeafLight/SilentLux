@@ -24,7 +24,19 @@ namespace SilentLux.Web.Controllers
         [Route("signin")]
         public IActionResult SignIn()
         {
+            return View();
+        }
+
+        [Route("signin-local")]
+        public IActionResult SignInLocal()
+        {
             return View(new SignInModel());
+        }
+
+        [Route("signin/{provider}")]
+        public IActionResult SignIn(string provider)
+        {
+            return Challenge(new AuthenticationProperties { RedirectUri = "/" }, provider);
         }
 
         [Route("signin")]
