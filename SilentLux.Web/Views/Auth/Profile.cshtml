@@ -1,0 +1,15 @@
+﻿@model SilentLux.Web.Models.ProfileModel
+
+@if (!ViewContext.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="form-validation"></div>
+}
+
+<form class="form-profile" asp-action="Profile" asp-route-returnUrl="@Context.Request.Query["returnUrl"]">
+    <h2>Please add the following information</h2>
+    <label class="sr-only">Display name</label>
+    <input type="text" class="form-control" placeholder="Display name" asp-for="DisplayName" />
+    <label class="sr-only">Email</label>
+    <input type="text" class="form-control" placeholder="Email" asp-for="Email" />
+    <button class="btn btn-lg btn-block btn-primary" type="submit">Submit</button>
+</form>

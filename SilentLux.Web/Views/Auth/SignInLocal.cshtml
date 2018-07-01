@@ -5,7 +5,7 @@
     <div asp-validation-summary="All" class="form-validation"></div>
 }
 
-<form class="form-signin" asp-action="SignIn" asp-route-returnUrl="@Context.Request.Query["returnUrl"]">
+<form class="form-signin" asp-action="SignInLocal" asp-route-returnUrl="@Context.Request.Query["returnUrl"]">
     <h2>Please sign in</h2>
     <label class="sr-only">Username</label>
     <input type="text" class="form-control" placeholder="Username" asp-for="Username" />

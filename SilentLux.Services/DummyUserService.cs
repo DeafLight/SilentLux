@@ -8,18 +8,18 @@ namespace SilentLux.Services
 {
     public class DummyUserService : IUserService
     {
-        private IDictionary<string, (string PasswordHash, User User)> _users =
-            new Dictionary<string, (string PasswordHash, User User)>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IUser> _users =
+            new Dictionary<string, IUser>(StringComparer.OrdinalIgnoreCase);
 
-        public DummyUserService(IDictionary<string, string> users)
+        public DummyUserService(IDictionary<string, (string Password, string DisplayName, string Email)> users)
         {
             foreach (var user in users)
             {
-                _users.Add(user.Key, (BCrypt.Net.BCrypt.HashPassword(user.Value), new User(user.Key)));
+                _users.Add(user.Key, LocalUser.Create(user.Key, BCrypt.Net.BCrypt.HashPassword(user.Value.Password), user.Value.DisplayName, user.Value.Email));
             }
         }
 
-        public Task<bool> ValidateCredentials(string username, string password, out User user)
+        public Task<bool> ValidateCredentialsAsync(string username, string password, out LocalUser user)
         {
             user = null;
 
@@ -27,11 +27,13 @@ namespace SilentLux.Services
 
             if (_users.ContainsKey(key))
             {
-                var hash = _users[key].PasswordHash;
+                var localUser = _users[key] as LocalUser;
+
+                var hash = localUser.PasswordHash;
 
                 if (BCrypt.Net.BCrypt.Verify(password, hash))
                 {
-                    user = _users[key].User;
+                    user = localUser;
 
                     return Task.FromResult(true);
                 }
@@ -40,16 +42,35 @@ namespace SilentLux.Services
             return Task.FromResult(false);
         }
 
-        public Task<bool> AddUser(string username, string password)
+        public Task<bool> AddLocalUserAsync(string username, string password, string displayName, string email)
         {
             if (_users.ContainsKey(username))
             {
                 Task.FromResult(false);
             }
 
-            _users.Add(username, (BCrypt.Net.BCrypt.HashPassword(password), new User(username)));
+            _users.Add(username, LocalUser.Create(username, BCrypt.Net.BCrypt.HashPassword(password), displayName, email));
 
             return Task.FromResult(true);
+        }
+
+        public Task<SocialUser> AddSocialUserAsync(string id, string displayName, string email)
+        {
+            var user = SocialUser.Create(id, displayName, email);
+
+            _users.Add(id, user);
+
+            return Task.FromResult(user);
+        }
+
+        public Task<IUser> GetUserByIdAsync(string id)
+        {
+            if (_users.ContainsKey(id))
+            {
+                return Task.FromResult(_users[id]);
+            }
+
+            return Task.FromResult<IUser>(null);
         }
     }
 }

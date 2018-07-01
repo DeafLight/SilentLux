@@ -5,7 +5,9 @@ namespace SilentLux.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> ValidateCredentials(string username, string password, out User user);
-        Task<bool> AddUser(string username, string password);
+        Task<bool> ValidateCredentialsAsync(string username, string password, out LocalUser user);
+        Task<bool> AddLocalUserAsync(string id, string password, string displayName, string email);
+        Task<SocialUser> AddSocialUserAsync(string id, string displayName, string email);
+        Task<IUser> GetUserByIdAsync(string id);
     }
 }

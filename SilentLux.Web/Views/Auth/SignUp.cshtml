@@ -7,11 +7,15 @@
 
 <form class="form-signin" asp-action="SignUp">
     <h2>Please register</h2>
-    <label class="sr-only">Username</label>
-    <input type="text" class="form-control" placeholder="Username" asp-for="Username" />
+    <label class="sr-only">Id</label>
+    <input type="text" class="form-control" placeholder="Id" asp-for="Id" />
     <label class="sr-only">Password</label>
     <input type="password" class="form-control" placeholder="Password" asp-for="Password" />
     <label class="sr-only">Repeat password</label>
     <input type="password" class="form-control" placeholder="Repeat password" asp-for="RepeatPassword" />
+    <label class="sr-only">Display name</label>
+    <input type="text" class="form-control" placeholder="Display name" asp-for="DisplayName" />
+    <label class="sr-only">Email</label>
+    <input type="text" class="form-control" placeholder="Email" asp-for="Email" />
     <button class="btn btn-lg btn-block btn-primary" type="submit">Register</button>
 </form>

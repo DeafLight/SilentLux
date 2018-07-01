@@ -12,6 +12,8 @@ namespace Pluralsight.AspNetCore.Auth.Web
 {
     public class Startup
     {
+        public const string TemporaryScheme = "Temporary";
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
@@ -19,13 +21,13 @@ namespace Pluralsight.AspNetCore.Auth.Web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            var users = new Dictionary<string, string> { { "test", "password" } };
+            var users = new Dictionary<string, (string Password, string DisplayName, string Email)> { { "test", ("password", "M. Test", "test@test.com") } };
             services.AddSingleton<IUserService>(new DummyUserService(users));
 
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = TemporaryScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
                 .AddFacebook(options =>
@@ -33,14 +35,16 @@ namespace Pluralsight.AspNetCore.Auth.Web
                     options.AppId = "200069633984414";
                     options.AppSecret = "33d4cba728e720b6afbb6f2751e6be9d";
                 })
-                .AddTwitter(options=> {
+                .AddTwitter(options =>
+                {
                     options.ConsumerKey = "XcNWcFHyAKFxsiAoEqmaajHsH";
                     options.ConsumerSecret = "xaxT01KbHZsiqsqloY3kFxv8EfCZ1M9YnKNPFz7QSif08VGVJg";
                 })
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/auth/signin";
-                });
+                })
+                .AddCookie(TemporaryScheme);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
