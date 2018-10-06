@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Pluralsight.AspNetCore.Auth.Web;
 using SilentLux.Model;
 using SilentLux.Services.Interfaces;
 using SilentLux.Web.Models;
@@ -25,7 +24,7 @@ namespace SilentLux.Web.Controllers
         [Route("signin")]
         public async Task<IActionResult> SignIn()
         {
-            var authResult = await HttpContext.AuthenticateAsync(Startup.TemporaryScheme);
+            var authResult = await HttpContext.AuthenticateAsync(Constants.TemporaryScheme);
 
             if (authResult.Succeeded)
             {
@@ -61,25 +60,27 @@ namespace SilentLux.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _userService.ValidateCredentialsAsync(model.Username, model.Password, out LocalUser user))
-                {
-                    await SignInUser(user.Id);
-
-                    if (returnUrl != null)
+                return await _userService.ValidateCredentialsAsync(model.Username, model.Password)
+                    .MatchAsync<IActionResult>(async x =>
                     {
-                        return Redirect(returnUrl);
-                    }
+                        await SignInUser(x.Id);
 
-                    return RedirectToAction("Index", "Home");
-                }
+                        if (returnUrl != null)
+                        {
+                            return Redirect(returnUrl);
+                        }
+
+                        return RedirectToAction("Index", "Home");
+                    }, () => View(model));
             }
+
             return View(model);
         }
 
         [Route("signin/profile")]
         public async Task<IActionResult> Profile(string returnUrl = null)
         {
-            var authResult = await HttpContext.AuthenticateAsync(Startup.TemporaryScheme);
+            var authResult = await HttpContext.AuthenticateAsync(Constants.TemporaryScheme);
 
             if (!authResult.Succeeded)
             {
@@ -113,7 +114,7 @@ namespace SilentLux.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Profile(ProfileModel model, string returnUrl = null)
         {
-            var authResult = await HttpContext.AuthenticateAsync(Startup.TemporaryScheme);
+            var authResult = await HttpContext.AuthenticateAsync(Constants.TemporaryScheme);
 
             if (!authResult.Succeeded)
             {
@@ -122,7 +123,7 @@ namespace SilentLux.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await _userService.AddSocialUserAsync(authResult.Principal.FindFirst(ClaimTypes.NameIdentifier).Value, model.DisplayName, model.Email);
+                var user = await _userService.AddSocialUserAsync(authResult.Principal.FindFirst(ClaimTypes.NameIdentifier).Value, model.DisplayName, (EmailString)model.Email);
                 return await SignInUser(user, returnUrl);
             }
 
@@ -150,7 +151,8 @@ namespace SilentLux.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _userService.AddLocalUserAsync(model.Id, model.Password, model.DisplayName, model.Email))
+
+                if (await _userService.AddLocalUserAsync(model.Id, model.Password, model.DisplayName, (EmailString)model.Email))
                 {
                     await SignInUser(model.Id);
                     return RedirectToAction("Index", "Home");
@@ -176,7 +178,7 @@ namespace SilentLux.Web.Controllers
 
         private async Task<IActionResult> SignInUser(IUser user, string returnUrl = null)
         {
-            await HttpContext.SignOutAsync(Startup.TemporaryScheme);
+            await HttpContext.SignOutAsync(Constants.TemporaryScheme);
 
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),

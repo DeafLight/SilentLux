@@ -1,8 +1,10 @@
-﻿using SilentLux.Model;
+﻿using LanguageExt;
+using SilentLux.Model;
 using SilentLux.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static LanguageExt.Prelude;
 
 namespace SilentLux.Services
 {
@@ -11,7 +13,7 @@ namespace SilentLux.Services
         private readonly IDictionary<string, IUser> _users =
             new Dictionary<string, IUser>(StringComparer.OrdinalIgnoreCase);
 
-        public DummyUserService(IDictionary<string, (string Password, string DisplayName, string Email)> users)
+        public DummyUserService(IDictionary<string, (string Password, string DisplayName, EmailString Email)> users)
         {
             foreach (var user in users)
             {
@@ -19,10 +21,8 @@ namespace SilentLux.Services
             }
         }
 
-        public Task<bool> ValidateCredentialsAsync(string username, string password, out LocalUser user)
+        public OptionAsync<LocalUser> ValidateCredentialsAsync(string username, string password)
         {
-            user = null;
-
             var key = username;
 
             if (_users.ContainsKey(key))
@@ -33,16 +33,14 @@ namespace SilentLux.Services
 
                 if (BCrypt.Net.BCrypt.Verify(password, hash))
                 {
-                    user = localUser;
-
-                    return Task.FromResult(true);
+                    return OptionalAsync(Task.FromResult(localUser));
                 }
             }
 
-            return Task.FromResult(false);
+            return None;
         }
 
-        public Task<bool> AddLocalUserAsync(string username, string password, string displayName, string email)
+        public Task<bool> AddLocalUserAsync(string username, string password, string displayName, EmailString email)
         {
             if (_users.ContainsKey(username))
             {
@@ -54,7 +52,7 @@ namespace SilentLux.Services
             return Task.FromResult(true);
         }
 
-        public Task<SocialUser> AddSocialUserAsync(string id, string displayName, string email)
+        public Task<SocialUser> AddSocialUserAsync(string id, string displayName, EmailString email)
         {
             var user = SocialUser.Create(id, displayName, email);
 
