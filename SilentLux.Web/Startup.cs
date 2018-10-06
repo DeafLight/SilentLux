@@ -4,16 +4,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection;
+using SilentLux.Model;
 using SilentLux.Services;
 using SilentLux.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace Pluralsight.AspNetCore.Auth.Web
+namespace SilentLux.Web
 {
     public class Startup
     {
-        public const string TemporaryScheme = "Temporary";
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
@@ -21,13 +20,13 @@ namespace Pluralsight.AspNetCore.Auth.Web
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            var users = new Dictionary<string, (string Password, string DisplayName, string Email)> { { "test", ("password", "M. Test", "test@test.com") } };
+            var users = new Dictionary<string, (string Password, string DisplayName, EmailString Email)> { { "test", ("password", "M. Test", (EmailString)"test@test.com") } };
             services.AddSingleton<IUserService>(new DummyUserService(users));
 
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = TemporaryScheme;
+                options.DefaultSignInScheme = Constants.TemporaryScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
                 .AddFacebook(options =>
@@ -44,7 +43,7 @@ namespace Pluralsight.AspNetCore.Auth.Web
                 {
                     options.LoginPath = "/auth/signin";
                 })
-                .AddCookie(TemporaryScheme);
+                .AddCookie(Constants.TemporaryScheme);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

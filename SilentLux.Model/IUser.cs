@@ -4,6 +4,6 @@
     {
         string Id { get; }
         string DisplayName { get; }
-        string Email { get; }
+        EmailString Email { get; }
     }
 }
